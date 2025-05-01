@@ -3,35 +3,26 @@ using TMPro;
 using Articy.Unity;
 using Articy.Unity.Interfaces;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEditor.Rendering;
 using Articy.Articybrothel;
 
 
 public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 {
+    [Header("Dialogue panel settings")]
     [SerializeField] private GameObject _dialogueWidget;
     [SerializeField] private TextMeshProUGUI _dialgueText;
-    //[SerializeField] private Text _simpleText;
+    [SerializeField] private TextMeshProUGUI _npcName;
+
     private bool _isDialogueActive;
 
-  [SerializeField] private ArticyFlowPlayer _flowPlayer;
-
-    [Space]
-    [Space]
-
-    public ArticyRef myRef;
+   private ArticyFlowPlayer _flowPlayer;
 
     private void Start()
     {
-       // _flowPlayer = GetComponent<ArticyFlowPlayer>();
+        _flowPlayer = GetComponent<ArticyFlowPlayer>();
         _dialogueWidget.SetActive(true);
         _isDialogueActive = true;
 
-        if (myRef.HasReference)
-        {
-            var obj = myRef.GetObject();
-        }
     }
 
     private void Initialize() 
@@ -42,12 +33,23 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
         _dialgueText.text = string.Empty;
-        Debug.Log(aObject);
-        var objectWithText = aObject as DialogueFragment;
-        Debug.Log(objectWithText);
-        if (objectWithText != null)     
+        _npcName.text = string.Empty;
+
+        var dialogueFragment = aObject as DialogueFragment;
+
+        if (dialogueFragment != null)     
         {
-            _dialgueText.text = objectWithText.Text;
+            _dialgueText.text  = dialogueFragment.Text;
+        }
+
+        var objectWithSpeaker = aObject as IObjectWithSpeaker;
+        if (objectWithSpeaker != null) 
+        {
+            var speakerEntity = objectWithSpeaker.Speaker as Entity;
+            if (speakerEntity != null) 
+            {
+                _npcName.text = speakerEntity.DisplayName;
+            }
         }
     }
 
