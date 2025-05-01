@@ -1,16 +1,19 @@
 using UnityEngine;
+using Articy.Unity;
+using System.Collections.Generic;
 
 public class ArticyDataBaseProvider : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public ArticyRef myFirstArticyModel;
+
+    public Dictionary<int, ArticyRef> test = new Dictionary<int, ArticyRef>();
+
+
     void Start()
     {
-        
-    }
+        var techName = myFirstArticyModel.GetObject().TechnicalName;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(myFirstArticyModel != null )
+        Debug.Log(techName);
     }
 }
