@@ -2431,7 +2431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1267479009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3647,10 +3647,10 @@ MonoBehaviour:
   startOn:
     instanceId: 0
     referencingMode: 0
-    lowId: 860
+    lowId: 357
     highId: 16777216
   pauseOn: 4
-  ignoreInvalidBranches: 0
+  ignoreInvalidBranches: 1
   continuouslyRecalculateBranches: 0
   continouslyRecalculateInterval: 1
 --- !u!114 &1766514506
@@ -3679,6 +3679,7 @@ MonoBehaviour:
   - {fileID: 1679812259}
   - {fileID: 645692537}
   - {fileID: 234782826}
+  _testBool: 0
 --- !u!4 &1766514507
 Transform:
   m_ObjectHideFlags: 0
