@@ -3647,7 +3647,7 @@ MonoBehaviour:
   startOn:
     instanceId: 0
     referencingMode: 0
-    lowId: 357
+    lowId: 860
     highId: 16777216
   pauseOn: 4
   ignoreInvalidBranches: 0
@@ -3668,6 +3668,7 @@ MonoBehaviour:
   _dialogueWidget: {fileID: 1094015744}
   _dialgueText: {fileID: 75528576}
   _npcName: {fileID: 313530147}
+  _buttonsWidget: {fileID: 887056073}
   _buttons:
   - {fileID: 751487741}
   - {fileID: 1593584848}
