@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Articy.Articybrothel;
 using UnityEngine.UI;
 using Articy.Articybrothel.Features;
-using Unity.VisualScripting;
 using Articy.Articybrothel.GlobalVariables;
 
 
@@ -22,58 +21,48 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     [SerializeField] private GameObject _buttonsWidget;
     [SerializeField] private List<Button> _buttons = new List<Button>();
 
+    private ArticyFlowPlayer _flowPlayer;
+    private IArticyObject _nextFlow;
     private bool _isDialogueActive;
 
-   private ArticyFlowPlayer _flowPlayer;
-    private bool _isReachedEnd;
+    //Getters
+    public bool IsDialogueActive { get { return _isDialogueActive; }}
 
     ////// below test variables
-    [SerializeField] private IArticyObject _nextFlow;
     [SerializeField] private bool _testBool;
 
-    private void Start()
+    public void Initialize() 
     {
         _flowPlayer = GetComponent<ArticyFlowPlayer>();
-        _dialogueWidget.SetActive(true);
-        _isDialogueActive = true;
-        //SetUpButtons(_buttons.Count);
-
-        Entity character1 = ArticyDatabase.GetObject<Entity>("Beata");
-        Entity character2 = ArticyDatabase.GetObject<Entity>("Frida");
-
-        Debug.Log(character1.DisplayName);
-        Debug.Log(character2.DisplayName);
-        //ArticyGlobalVariables.Default.LoseConditions.KilledByGuz = true;
-
     }
 
-    private void Initialize() 
+    public void SetUpDialogue(string eventTechnicalName)
     {
+        _nextFlow = ArticyDatabase.GetObject(eventTechnicalName);
+
+        _flowPlayer.StartOn = _nextFlow;
+        _dialogueWidget.SetActive(true);
+        _buttonsWidget.SetActive(true);
         _isDialogueActive = true;
     }
 
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
-        Debug.Log("Test Call");
-        //if (aObject as DialogueFragment == null) 
-        //{ 
-        //    EndDialogue(); 
-        //    return; 
-        //}
 
         _dialgueText.text = string.Empty;
         _npcName.text = string.Empty;
-        //foreach (var button in _buttons)
-        //{
-        //    button.onClick.RemoveAllListeners();
-        //    button.gameObject.SetActive(false);
-        //}
 
         var dialogueFragment = aObject as DialogueFragment;
 
         if (dialogueFragment != null)
         {
             _dialgueText.text = dialogueFragment.Text;
+
+            //Debug.Log(dialogueFragment.TechnicalName);
+            if (dialogueFragment.TechnicalName.Contains("Ins_")) 
+            {
+                Debug.Log("INSTRUCTION");
+            }
         }
        
         var objectWithSpeaker = aObject as IObjectWithSpeaker;
@@ -84,34 +73,25 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
             {
                 _npcName.text = speakerEntity.DisplayName;
             }
-
-            //if(_npcName.text == "Герой") 
-            //{
-            //    Debug.Log("TEXT NULL");
-            //    _flowPlayer.Play();
-            //}
         }
 
         if ((aObject as IObjectWithSpeaker) != null && ((aObject as IObjectWithSpeaker).Speaker as Entity).DisplayName == "Герой")
         {
-            if((aObject as IObjectWithMenuText).MenuText != "Изменить выбор") 
+            if ((aObject as IObjectWithMenuText).MenuText != "Изменить выбор")
             {
-                Debug.Log("TEXT NULL");
+                //Debug.Log("TEXT NULL");
                 _flowPlayer.Play();
             }
         }
     }
-
-    public void ContinueDialogue(int branchIndex)
-    {
-        _flowPlayer.Play(branchIndex);
-    }
-
-    public void ContinueDialogue(Branch branch)
+    private void ContinueDialogue(Branch branch)
     {
         _flowPlayer.Play(branch);
-        
+    }
 
+    private void ContinueDialogue(int branchIndex)
+    {
+        _flowPlayer.Play(branchIndex);
     }
 
     private void SetUpTheButton(Button button, Branch branch)
@@ -127,15 +107,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         button.gameObject.SetActive(true);
     }
 
-    private void SetUpButtons(int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            int index = i;
-            _buttons[index].onClick.AddListener(() => ContinueDialogue(index + 1));
-        }
-    }
-
     public void OnBranchesUpdated(IList<Branch> aBranches)
     {
         
@@ -147,11 +118,14 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
         foreach (var branch in aBranches)
         {
-            Debug.Log("Branch target " + branch + " is: " + branch.Target);
-            if (branch.Target is IOutputPin)
-            {
-                DialogueReachedEnd();
-            }
+            if ((branch.Target is ICondition) || (branch.Target is IInstruction) || (branch.Target is IConditionEvaluator))
+                    Debug.Log("INSTRUCTION");
+
+            //Debug.Log("Branch target " + branch + " is: " + branch.Target);
+            //if (branch.Target is IOutputPin)
+            //{
+            //    DialogueReachedEnd();
+            //}
         }
 
         if (aBranches.Count > 0)
@@ -159,7 +133,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
             for (int i = 0; i < aBranches.Count; i++)
             {
                 if (!aBranches[i].IsValid) continue;
-                //Debug.Log("aBranches.Count " + aBranches.Count);
                 SetUpTheButton(_buttons[i], aBranches[i]);
             }
         }
@@ -173,8 +146,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         _buttons[0].onClick.AddListener(EndDialogue);
         _buttons[0].GetComponentInChildren<TextMeshProUGUI>().text = "End flow";
         _buttons[0].gameObject.SetActive(true);
-
-
     }
 
     private void EndDialogue() 
@@ -187,26 +158,22 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         _flowPlayer.FinishCurrentPausedObject();
     }
 
-    private void TestSwitchFlow() 
-    {
-        IArticyObject articyObject = ArticyDatabase.GetObject("Event_Lif");
-        _flowPlayer.StartOn = articyObject;
-        _dialogueWidget.SetActive(true);
-        _buttonsWidget.SetActive(true);
-        //_flowPlayer.Play();
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && _testBool == false) 
-        {
-            _testBool = true;
-            TestSwitchFlow();
-        }
-    }
 
-    private void OnDisable()
-    {
-        _isReachedEnd = false;
-    }
+    //private void TestSwitchFlow() 
+    //{
+    //    IArticyObject articyObject = ArticyDatabase.GetObject("Event_Lif");
+    //    _flowPlayer.StartOn = articyObject;
+    //    _dialogueWidget.SetActive(true);
+    //    _buttonsWidget.SetActive(true);
+    //}
+
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.E) && _testBool == false) 
+    //    {
+    //        _testBool = true;
+    //        TestSwitchFlow();
+    //    }
+    //}
 }
