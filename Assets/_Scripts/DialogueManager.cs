@@ -11,6 +11,9 @@ using Articy.Articybrothel.GlobalVariables;
 
 public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 {
+ 
+    DialogueEventManager _dialogueEventManager;
+
     [Header("Dialogue panel settings")]
     [SerializeField] private GameObject _dialogueWidget;
     [SerializeField] private TextMeshProUGUI _dialgueText;
@@ -31,25 +34,43 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     ////// below test variables
     [SerializeField] private bool _testBool;
 
-    public void Initialize() 
+    List<IOutputPin> outputs;
+
+    public void Initialize(DialogueEventManager eventManager) 
     {
         _flowPlayer = GetComponent<ArticyFlowPlayer>();
+        _dialogueEventManager = eventManager;
     }
 
     public void SetUpDialogue(string eventTechnicalName)
     {
+        _isDialogueActive = true;
         _nextFlow = ArticyDatabase.GetObject(eventTechnicalName);
 
+        _buttons[0].GetComponentInChildren<TextMeshProUGUI>().text = "";
         _flowPlayer.StartOn = _nextFlow;
         _dialogueWidget.SetActive(true);
         _buttonsWidget.SetActive(true);
-        _isDialogueActive = true;
+        
     }
 
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
+        if (aObject as Instruction != null) 
+        {
+            //Debug.Log("InputPins: " + (aObject as Instruction).InputPins);
+            Debug.Log("OutPutPins[0]: " + (aObject as Instruction).OutputPins[0]);
+            outputs =  (aObject as Instruction).GetOutputPins();
 
-        _dialgueText.text = string.Empty;
+            foreach (var pin in outputs)
+            {
+                {
+                    Debug.Log(outputs);
+                }
+            }
+            }
+
+            _dialgueText.text = string.Empty;
         _npcName.text = string.Empty;
 
         var dialogueFragment = aObject as DialogueFragment;
@@ -57,18 +78,14 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         if (dialogueFragment != null)
         {
             _dialgueText.text = dialogueFragment.Text;
-
-            //Debug.Log(dialogueFragment.TechnicalName);
-            if (dialogueFragment.TechnicalName.Contains("Ins_")) 
-            {
-                Debug.Log("INSTRUCTION");
-            }
         }
        
         var objectWithSpeaker = aObject as IObjectWithSpeaker;
+       
         if (objectWithSpeaker != null) 
         {
             var speakerEntity = objectWithSpeaker.Speaker as Entity;
+            
             if (speakerEntity != null) 
             {
                 _npcName.text = speakerEntity.DisplayName;
@@ -77,9 +94,8 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
         if ((aObject as IObjectWithSpeaker) != null && ((aObject as IObjectWithSpeaker).Speaker as Entity).DisplayName == "Герой")
         {
-            if ((aObject as IObjectWithMenuText).MenuText != "Изменить выбор")
+            if ((aObject as IObjectWithMenuText).MenuText != "Изменить выбор")// it would be better to use universal TechnicalName
             {
-                //Debug.Log("TEXT NULL");
                 _flowPlayer.Play();
             }
         }
@@ -87,11 +103,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     private void ContinueDialogue(Branch branch)
     {
         _flowPlayer.Play(branch);
-    }
-
-    private void ContinueDialogue(int branchIndex)
-    {
-        _flowPlayer.Play(branchIndex);
     }
 
     private void SetUpTheButton(Button button, Branch branch)
@@ -118,17 +129,14 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
         foreach (var branch in aBranches)
         {
-            if ((branch.Target is ICondition) || (branch.Target is IInstruction) || (branch.Target is IConditionEvaluator))
-                    Debug.Log("INSTRUCTION");
-
-            //Debug.Log("Branch target " + branch + " is: " + branch.Target);
-            //if (branch.Target is IOutputPin)
-            //{
-            //    DialogueReachedEnd();
-            //}
+            Debug.Log("Branch target " + branch + " is: " + branch.Target);
+            if (branch.Target is IOutputPin)
+            {
+                DialogueReachedEnd();
+            }
         }
 
-        if (aBranches.Count > 0)
+        if (aBranches.Count > 0 && _buttons[0].GetComponentInChildren<TextMeshProUGUI>().text != "Закончить диалог")
         {
             for (int i = 0; i < aBranches.Count; i++)
             {
@@ -144,7 +152,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
             button.onClick.RemoveAllListeners();
 
         _buttons[0].onClick.AddListener(EndDialogue);
-        _buttons[0].GetComponentInChildren<TextMeshProUGUI>().text = "End flow";
+        _buttons[0].GetComponentInChildren<TextMeshProUGUI>().text = "Закончить диалог";
         _buttons[0].gameObject.SetActive(true);
     }
 
@@ -155,25 +163,9 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
         _dialogueWidget.SetActive(false);
         _buttonsWidget.SetActive(false);
+        _isDialogueActive = false;
         _flowPlayer.FinishCurrentPausedObject();
+
+        _dialogueEventManager.DialogueEnded();
     }
-
-
-
-    //private void TestSwitchFlow() 
-    //{
-    //    IArticyObject articyObject = ArticyDatabase.GetObject("Event_Lif");
-    //    _flowPlayer.StartOn = articyObject;
-    //    _dialogueWidget.SetActive(true);
-    //    _buttonsWidget.SetActive(true);
-    //}
-
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.E) && _testBool == false) 
-    //    {
-    //        _testBool = true;
-    //        TestSwitchFlow();
-    //    }
-    //}
 }
