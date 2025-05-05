@@ -56,22 +56,14 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
-        if (aObject as Instruction != null) 
-        {
-            //Debug.Log("InputPins: " + (aObject as Instruction).InputPins);
-            Debug.Log("OutPutPins[0]: " + (aObject as Instruction).OutputPins[0]);
-            outputs =  (aObject as Instruction).GetOutputPins();
 
-            foreach (var pin in outputs)
-            {
-                {
-                    Debug.Log(outputs);
-                }
-            }
-            }
-
-            _dialgueText.text = string.Empty;
+        _dialgueText.text = string.Empty;
         _npcName.text = string.Empty;
+
+        if (aObject as Instruction != null)
+        {
+            _dialgueText.text = "Ресурсы обновлены";
+        }
 
         var dialogueFragment = aObject as DialogueFragment;
 

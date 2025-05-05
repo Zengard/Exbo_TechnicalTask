@@ -64,7 +64,7 @@ public class GameLogic : MonoBehaviour
     {
         if (_dialogueManager.IsDialogueActive == true || _isGameOver == true) return;
 
-        _food -= Time.deltaTime;
+        //_food -= Time.deltaTime;
         if (_food <= 0) 
         {
             _gameOverScreen.SetActive(true);
