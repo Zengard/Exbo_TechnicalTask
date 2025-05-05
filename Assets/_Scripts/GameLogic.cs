@@ -5,8 +5,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using Articy.Articybrothel.Features;
 using Articy.Articybrothel.GlobalVariables;
-using Resources = Articy.Articybrothel.GlobalVariables.Resources;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameLogic : MonoBehaviour
 {
@@ -14,10 +14,10 @@ public class GameLogic : MonoBehaviour
     private bool _isGameOver;
 
     [Header("Resources")]
-    private Resources _resources;
     [SerializeField] private float _food;
     [SerializeField] private int _money;
-    [SerializeField] private float _sanitary; 
+    [SerializeField] private float _sanitary;
+    [SerializeField] private bool _isKilledByGuz;
 
     [Header("Dialogue flow presets")]
     [SerializeField] private DialogueManager _dialogueManager;
@@ -48,16 +48,16 @@ public class GameLogic : MonoBehaviour
         _hildet = ArticyDatabase.GetObject<Entity>("Hildet");
         _kristof = ArticyDatabase.GetObject<Entity>("Kristof");
 
-        _resources = ArticyGlobalVariables.Default.Resources;
-
-        _food = _resources.Food;
-        _money = _resources.Money;
-        _sanitary = _resources.Sanitary;
+        _food = ArticyGlobalVariables.Default.Resources.Food;
+        _money = ArticyGlobalVariables.Default.Resources.Money;
+        _sanitary = ArticyGlobalVariables.Default.Resources.Sanitary;
+        _isKilledByGuz = ArticyGlobalVariables.Default.LoseConditions.KilledByGuz;
 
         _dialogueManager.SetUpDialogue(_flowsOrder[_currentFlow].TechnicalName);
 
         _dialogueEventManager = eventManager;
         _dialogueEventManager.OnDialogueEnded.AddListener(SetNextFlow);
+        _dialogueEventManager.OnUpdateResources.AddListener(UpdateResources);
 
     }
     void Update()
@@ -91,7 +91,20 @@ public class GameLogic : MonoBehaviour
         }
     }
 
+    private void UpdateResources() 
+    {
+        if(_isKilledByGuz != ArticyGlobalVariables.Default.LoseConditions.KilledByGuz) 
+        {
+            _isGameOver = true;
+            _gameOverScreen.SetActive(true);
+        }
+    }
 
+    public void RestartScene() 
+    {
+        ArticyGlobalVariables.Default.ResetVariables();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     
 }
