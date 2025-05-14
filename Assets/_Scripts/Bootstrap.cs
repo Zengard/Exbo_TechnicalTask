@@ -10,6 +10,10 @@ public class Bootstrap : MonoBehaviour
     [Header("Item settings")]
     [SerializeField] private InventoryTracker _inventoryTracker;
 
+    [Header("Character settings")]
+    [SerializeField] private SupportTracker _supportTracker;
+    [SerializeField] private CharacterTracker _characterTracker;
+
     private DialogueEventManager _dialogueEventManager;
     
     void Start()
@@ -19,5 +23,7 @@ public class Bootstrap : MonoBehaviour
         _dialogueManager.Initialize(_dialogueEventManager);
         _gameLogic.Initialize(_dialogueEventManager);
         _inventoryTracker.Initialize(_dialogueEventManager);
+        _supportTracker.Initialize(_dialogueEventManager);
+        _characterTracker.Initialize(_dialogueEventManager);
     } 
 }

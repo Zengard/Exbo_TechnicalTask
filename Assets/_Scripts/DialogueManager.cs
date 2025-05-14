@@ -59,7 +59,11 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         {
             //_dialgueText.text = "Ресурсы обновлены";
             _dialogueEventManager.UpdateResources();//заменить на использование нотификейшенов
-            _dialogueEventManager.UpdateItems(_dialgueText);
+            //_dialogueEventManager.UpdateSupport(_dialgueText);
+            //_dialogueEventManager.UpdateItems(_dialgueText);
+           // _dialogueEventManager.UpdateHeroine(_dialgueText);
+
+            _dialogueEventManager.UpdateEntities(_dialgueText);
         }
 
         var dialogueFragment = aObject as DialogueFragment;

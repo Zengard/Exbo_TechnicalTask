@@ -20,7 +20,7 @@ public class TestStorage : MonoBehaviour
     private void Start()
     {
         ArticyDatabase.DefaultGlobalVariables.Notifications.AddListener("Item_*", OnItemChanged);
-        ArticyDatabase.ObjectNotifications.AddListener("Item_", OnGoldChanged);
+        ArticyDatabase.ObjectNotifications.AddListener("Item.Count", OnGoldChanged);
     }
 
     private void OnItemChanged(string aVariable, object aValue)
@@ -42,10 +42,26 @@ public class TestStorage : MonoBehaviour
         var currentGoldCount = (int)aProperty.NewValue;
 
         if (prevGoldCount > currentGoldCount)
-            Debug.Log("Подвески нет ");
+            Debug.Log("Подвеска потеряна");
 
         if (prevGoldCount < currentGoldCount)
             Debug.Log("Подвеска была добавлена ");
 
     }
+
+    //private void Update()
+    //{
+    //    if (Input.GetKeyUp(KeyCode.F)) 
+    //    {
+    //        foreach (var item in _allItems)
+    //        {
+    //            Debug.Log($"ID: {item.Id}");
+    //            Debug.Log($"Название: {item.TechnicalName}");
+    //            Debug.Log($"количество: {item.GetFeatureItem().Count}");
+    //            Debug.Log($"текст получения: {item.GetFeatureItem().StrObtained}");
+    //            Debug.Log($"текст потери:{item.GetFeatureItem().StrLost}");
+    //            Debug.Log("------------------");
+    //        }
+    //    }
+    //}
 }

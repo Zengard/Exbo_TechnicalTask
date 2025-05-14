@@ -22,7 +22,7 @@ public class InventoryTracker : MonoBehaviour
         InitializeItemCache();
 
         _dialogueEventManager = eventManager;
-        _dialogueEventManager.OnUpdateItems.AddListener(CheckItemsChanges);
+        _dialogueEventManager.OnUpdateDialogueEntities.AddListener(CheckItemsChanges);
     }
     private void InitializeItemCache()
     { 
@@ -58,20 +58,4 @@ public class InventoryTracker : MonoBehaviour
             }
         }
     }
-
-    //private void Update()
-    //{
-    //    if (Input.GetKeyUp(KeyCode.F)) 
-    //    {
-    //        foreach (var item in _allItems)
-    //        {
-    //            Debug.Log($"ID: {item.Id}");
-    //            Debug.Log($"Ќазвание: {item.TechnicalName}");
-    //            Debug.Log($"количество: {item.GetFeatureItem().Count}");
-    //            Debug.Log($"текст получени€: {item.GetFeatureItem().StrObtained}");
-    //            Debug.Log($"текст потери:{item.GetFeatureItem().StrLost}");
-    //            Debug.Log("------------------");
-    //        }
-    //    }
-    //}
 }
