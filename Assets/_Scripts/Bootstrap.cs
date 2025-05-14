@@ -3,8 +3,13 @@ using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
+    [Header("Main dialogue settings")]
     [SerializeField] private GameLogic _gameLogic;
     [SerializeField] private DialogueManager _dialogueManager;
+
+    [Header("Item settings")]
+    [SerializeField] private InventoryTracker _inventoryTracker;
+
     private DialogueEventManager _dialogueEventManager;
     
     void Start()
@@ -13,5 +18,6 @@ public class Bootstrap : MonoBehaviour
 
         _dialogueManager.Initialize(_dialogueEventManager);
         _gameLogic.Initialize(_dialogueEventManager);
+        _inventoryTracker.Initialize(_dialogueEventManager);
     } 
 }

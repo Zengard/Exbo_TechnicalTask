@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ArticyFlowPlayer Icon_0: 2474983305063385377
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

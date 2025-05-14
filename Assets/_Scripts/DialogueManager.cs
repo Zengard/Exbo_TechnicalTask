@@ -31,11 +31,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     //Getters
     public bool IsDialogueActive { get { return _isDialogueActive; }}
 
-    ////// below test variables
-    [SerializeField] private bool _testBool;
-
-    List<IOutputPin> outputs;
-
     public void Initialize(DialogueEventManager eventManager) 
     {
         _flowPlayer = GetComponent<ArticyFlowPlayer>();
@@ -63,7 +58,8 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         if (aObject as Instruction != null)
         {
             _dialgueText.text = "Ресурсы обновлены";
-            _dialogueEventManager.UpdateResources();
+            _dialogueEventManager.UpdateResources();//заменить на использование нотификейшенов
+            _dialogueEventManager.UpdateItems();
         }
 
         var dialogueFragment = aObject as DialogueFragment;
@@ -122,7 +118,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
         foreach (var branch in aBranches)
         {
-            Debug.Log("Branch target " + branch + " is: " + branch.Target);
+            //Debug.Log("Branch target " + branch + " is: " + branch.Target);
             if (branch.Target is IOutputPin)
             {
                 DialogueReachedEnd();

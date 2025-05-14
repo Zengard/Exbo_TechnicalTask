@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ArticyTextComponent Icon_0: -864254369043501818
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
