@@ -19,7 +19,7 @@ public class TestStorage : MonoBehaviour
 
     private void Start()
     {
-         ArticyDatabase.DefaultGlobalVariables.Notifications.AddListener("Item_*", OnItemChanged);
+        ArticyDatabase.DefaultGlobalVariables.Notifications.AddListener("Item_*", OnItemChanged);
         ArticyDatabase.ObjectNotifications.AddListener("Item_", OnGoldChanged);
     }
 

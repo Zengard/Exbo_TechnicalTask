@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,7 +6,7 @@ public class DialogueEventManager
 {
     public UnityEvent OnDialogueEnded = new UnityEvent();
     public UnityEvent OnUpdateResources = new UnityEvent();
-    public UnityEvent OnUpdateItems = new UnityEvent();
+    public UnityEvent<TextMeshProUGUI> OnUpdateItems = new UnityEvent<TextMeshProUGUI>();
 
     public void DialogueEnded() 
     {
@@ -17,8 +18,8 @@ public class DialogueEventManager
         OnUpdateResources.Invoke();
     }
 
-    public void UpdateItems() 
+    public void UpdateItems(TextMeshProUGUI dialogue) 
     {
-        OnUpdateItems.Invoke();
+        OnUpdateItems.Invoke(dialogue);
     }
 }

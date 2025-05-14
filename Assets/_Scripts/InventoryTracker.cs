@@ -4,7 +4,9 @@ using Articy.Unity;
 using Articy.Unity.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class InventoryTracker : MonoBehaviour
@@ -35,7 +37,7 @@ public class InventoryTracker : MonoBehaviour
         }
     }
 
-    private void CheckItemsChanges() 
+    private void CheckItemsChanges(TextMeshProUGUI dialogue) 
     {
         foreach (var item in _allItems)
         {
@@ -44,11 +46,15 @@ public class InventoryTracker : MonoBehaviour
 
             if(newValue > oldValue) 
             {
+               dialogue.text += "\n" + item.GetFeatureItem().StrObtained;
                 Debug.Log($"{item.GetFeatureItem().StrObtained}");
+                _itemCache[item.TechnicalName] = newValue;
             }
             else if( oldValue > newValue) 
             {
+                dialogue.text += "\n" + item.GetFeatureItem().StrLost;
                 Debug.Log($"{item.GetFeatureItem().StrLost}");
+                _itemCache[item.TechnicalName] = newValue;
             }
         }
     }
