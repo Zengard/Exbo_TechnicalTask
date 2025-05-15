@@ -57,7 +57,7 @@ public class GameLogic : MonoBehaviour
 
         _dialogueEventManager = eventManager;
         _dialogueEventManager.OnDialogueEnded.AddListener(SetNextFlow);
-        _dialogueEventManager.OnUpdateResources.AddListener(UpdateResources);
+        //_dialogueEventManager.OnUpdateResources.AddListener(UpdateResources);
 
     }
     void Update()

@@ -14,6 +14,9 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private SupportTracker _supportTracker;
     [SerializeField] private CharacterTracker _characterTracker;
 
+    [Header("Resource settings")]
+    [SerializeField] private ResoursesTracker _resoursesTracker;
+
     private DialogueEventManager _dialogueEventManager;
     
     void Start()
@@ -25,5 +28,6 @@ public class Bootstrap : MonoBehaviour
         _inventoryTracker.Initialize(_dialogueEventManager);
         _supportTracker.Initialize(_dialogueEventManager);
         _characterTracker.Initialize(_dialogueEventManager);
+        _resoursesTracker.Initialize(_dialogueEventManager);
     } 
 }

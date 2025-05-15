@@ -47,13 +47,11 @@ public class InventoryTracker : MonoBehaviour
             if(newValue > oldValue) 
             {
                dialogue.text += "\n" + item.GetFeatureItem().StrObtained;
-                Debug.Log($"{item.GetFeatureItem().StrObtained}");
                 _itemCache[item.TechnicalName] = newValue;
             }
             else if( oldValue > newValue) 
             {
                 dialogue.text += "\n" + item.GetFeatureItem().StrLost;
-                Debug.Log($"{item.GetFeatureItem().StrLost}");
                 _itemCache[item.TechnicalName] = newValue;
             }
         }
