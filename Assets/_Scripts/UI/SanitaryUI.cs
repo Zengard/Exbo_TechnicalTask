@@ -4,7 +4,7 @@ using Articy.Unity;
 using Articy.Articybrothel;
 using Articy.Articybrothel.GlobalVariables;
 
-public class FoodUI : ResourceUI
+public class SanitaryUI : ResourceUI
 {
     private DialogueEventManager _dialogueEventManager;
     private ResoursesTracker _resourcesTracker;
@@ -19,7 +19,7 @@ public class FoodUI : ResourceUI
         _slider = GetComponent<Slider>();
         _resourceData = ArticyDatabase.GetObject<ResourceMeta>(_resourceTechnicalName);
 
-        _globalvariableValue = ArticyGlobalVariables.Default.Resources.Food;
+        _globalvariableValue = ArticyGlobalVariables.Default.Resources.Sanitary;
         _baseChangePerDay = _resourceData.GetFeatureResourceMeta().BaseChangePerDay;
 
         _resourceName.text = _resourceData.DisplayName + ": " + _globalvariableValue;
@@ -28,8 +28,8 @@ public class FoodUI : ResourceUI
         _dialogueEventManager.OnDialogueStarted.AddListener(DialogueStarted);
         _dialogueEventManager.OnDialogueEnded.AddListener(DialogueEnded);
 
-         _resourcesTracker = resourcesTracker;
-        
+        _resourcesTracker = resourcesTracker;
+
     }
 
     private void Update()
@@ -46,25 +46,25 @@ public class FoodUI : ResourceUI
         if (_slider.value <= 0)
         {
             _slider.value = _slider.maxValue;
-            ArticyGlobalVariables.Default.Resources.Food--;
-            _resourcesTracker.UpdateFoodData(ArticyGlobalVariables.Default.Resources.Food);
-            _globalvariableValue = ArticyGlobalVariables.Default.Resources.Food;
+            ArticyGlobalVariables.Default.Resources.Sanitary--;
+            _resourcesTracker.UpdateSanitaryData(ArticyGlobalVariables.Default.Resources.Sanitary);
+            _globalvariableValue = ArticyGlobalVariables.Default.Resources.Sanitary;
             _resourceName.text = _resourceData.DisplayName + ": " + _globalvariableValue;
         }
     }
 
     public void UpdateUIResources() // receive new data from ResourceTracker
     {
-        _globalvariableValue = ArticyGlobalVariables.Default.Resources.Food;
+        _globalvariableValue = ArticyGlobalVariables.Default.Resources.Sanitary;
         _resourceName.text = _resourceData.DisplayName + ": " + _globalvariableValue;
     }
 
-    private void DialogueStarted() 
+    private void DialogueStarted()
     {
         _isDialogueActive = true;
     }
 
-    private void DialogueEnded() 
+    private void DialogueEnded()
     {
         _isDialogueActive = false;
     }

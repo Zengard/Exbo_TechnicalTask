@@ -9,6 +9,8 @@ public class ResoursesTracker : MonoBehaviour
 {
     private DialogueEventManager _dialogueEventManager;
     private FoodUI _foodUI;
+    private MoneyUI _moneyUI;
+    private SanitaryUI _sanitaryUI;
 
     private string _resourceUpdateText;
 
@@ -16,7 +18,7 @@ public class ResoursesTracker : MonoBehaviour
     private int _money;
     private int _sanitary;
   
-    public void Initialize(DialogueEventManager eventManager, FoodUI foodUI)
+    public void Initialize(DialogueEventManager eventManager, FoodUI foodUI, MoneyUI moneyUI, SanitaryUI sanitaryUI)
     {
         _food = ArticyGlobalVariables.Default.Resources.Food;
         _money = ArticyGlobalVariables.Default.Resources.Money;
@@ -27,6 +29,8 @@ public class ResoursesTracker : MonoBehaviour
         _dialogueEventManager.OnUpdateDialogueEntities.AddListener(SendToDialogue);
 
         _foodUI = foodUI;
+        _moneyUI = moneyUI;
+        _sanitaryUI = sanitaryUI;
 
     }
 
@@ -43,7 +47,7 @@ public class ResoursesTracker : MonoBehaviour
                 {
                     _resourceUpdateText += "\n" + "-" + (_food - (int)aValue) + " Еда";
                 }
-                _food = (int)aValue;//отправить в фудЮИ
+                _food = (int)aValue;
                 _foodUI.UpdateUIResources();
                 break;
 
@@ -57,6 +61,7 @@ public class ResoursesTracker : MonoBehaviour
                     _resourceUpdateText += "\n" + "-" + (_money - (int)aValue) + " Деньги";
                 }
                 _money = (int)aValue;
+                _moneyUI.UpdateUIResources();
                 break;
 
             case "Resources.Sanitary":
@@ -69,6 +74,7 @@ public class ResoursesTracker : MonoBehaviour
                     _resourceUpdateText += "\n" + "-" + (_sanitary - (int)aValue) + " Санитария";
                 }
                 _sanitary = (int)aValue;
+                _sanitaryUI.UpdateUIResources();
                 break;
         }
        
@@ -77,6 +83,11 @@ public class ResoursesTracker : MonoBehaviour
     public void UpdateFoodData(int newFoodData) 
     {
         _food = newFoodData;
+    }
+
+    public void UpdateSanitaryData(int newSanitaryData) 
+    {
+        _sanitary = newSanitaryData;
     }
 
     private void SendToDialogue(TextMeshProUGUI dialogue) 
