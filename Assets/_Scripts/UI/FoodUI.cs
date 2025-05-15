@@ -37,11 +37,7 @@ public class FoodUI : ResourceUI
         if (_isDialogueActive == true) return;
 
         if (_slider.value > 0)
-            _slider.value += _baseChangePerDay * Time.deltaTime;
-
-        //_slider.value = Mathf.Lerp(_slider.maxValue, _slider.minValue, _timeLeft);
-
-        //_timeLeft -= _baseChangePerDay * Time.deltaTime;
+            _slider.value += _baseChangePerDay * Time.deltaTime * 3;
 
         if (_slider.value <= 0)
         {
@@ -50,6 +46,11 @@ public class FoodUI : ResourceUI
             _resourcesTracker.UpdateFoodData(ArticyGlobalVariables.Default.Resources.Food);
             _globalvariableValue = ArticyGlobalVariables.Default.Resources.Food;
             _resourceName.text = _resourceData.DisplayName + ": " + _globalvariableValue;
+        }
+
+        if(ArticyGlobalVariables.Default.Resources.Food < 0) 
+        {
+            _dialogueEventManager.ResourceEnded();
         }
     }
 

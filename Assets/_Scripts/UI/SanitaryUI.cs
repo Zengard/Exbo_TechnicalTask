@@ -39,10 +39,6 @@ public class SanitaryUI : ResourceUI
         if (_slider.value > 0)
             _slider.value += _baseChangePerDay * Time.deltaTime;
 
-        //_slider.value = Mathf.Lerp(_slider.maxValue, _slider.minValue, _timeLeft);
-
-        //_timeLeft -= _baseChangePerDay * Time.deltaTime;
-
         if (_slider.value <= 0)
         {
             _slider.value = _slider.maxValue;

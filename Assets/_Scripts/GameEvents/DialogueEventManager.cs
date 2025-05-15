@@ -7,6 +7,7 @@ public class DialogueEventManager
     public UnityEvent OnDialogueEnded = new UnityEvent();
     public UnityEvent OnDialogueStarted = new UnityEvent();
     public UnityEvent OnUpdateResources = new UnityEvent();
+    public UnityEvent OnResourceEnded = new UnityEvent();
 
     public UnityEvent<TextMeshProUGUI> OnUpdateDialogueEntities = new UnityEvent<TextMeshProUGUI>();
 
@@ -29,5 +30,10 @@ public class DialogueEventManager
     public void UpdateEntities(TextMeshProUGUI dialogue) 
     {
         OnUpdateDialogueEntities.Invoke(dialogue);
+    }
+
+    public void ResourceEnded() 
+    {
+        OnResourceEnded.Invoke();
     }
 }

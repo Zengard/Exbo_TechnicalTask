@@ -8,7 +8,7 @@ public class SupportTracker : MonoBehaviour
 {
     DialogueEventManager _dialogueEventManager;
 
-    private List<Supporter> _allSupporters = new List<Supporter>();
+    public List<Supporter> allSupporters = new List<Supporter>();
     private Dictionary<string, bool> _supportersCache = new Dictionary<string, bool>();
 
 
@@ -22,15 +22,15 @@ public class SupportTracker : MonoBehaviour
 
     private void InitializeSupportersCache()
     {
-        _allSupporters = ArticyDatabase.GetAllOfType<Supporter>();
+        allSupporters = ArticyDatabase.GetAllOfType<Supporter>();
 
-        foreach (var supporter in _allSupporters)
+        foreach (var supporter in allSupporters)
             _supportersCache.Add(supporter.TechnicalName, supporter.GetFeatureCharacter().IsActive);
     }
 
     private void CheckSupportersChanges(TextMeshProUGUI dialogue)
     {
-        foreach (var supporter in _allSupporters)
+        foreach (var supporter in allSupporters)
         {
             var oldValue = _supportersCache[supporter.TechnicalName];
             var newValue = supporter.GetFeatureCharacter().IsActive;

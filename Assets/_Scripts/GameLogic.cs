@@ -58,6 +58,7 @@ public class GameLogic : MonoBehaviour
         _dialogueEventManager = eventManager;
         _dialogueEventManager.OnDialogueEnded.AddListener(SetNextFlow);
         _dialogueEventManager.OnUpdateResources.AddListener(UpdateResources);
+        _dialogueEventManager.OnResourceEnded.AddListener(GameOver);
 
     }
     private void Update()
@@ -106,5 +107,9 @@ public class GameLogic : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    
+    private void GameOver() 
+    {
+            _gameOverScreen.SetActive(true);
+            _isGameOver = true;
+    }
 }

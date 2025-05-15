@@ -22,6 +22,9 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private MoneyUI _moneyUI;
     [SerializeField] private SanitaryUI _sanitaryUI;
 
+    [Header("UI characters")]
+    [SerializeField] private CharacterUI_Manager _characterUI_Manager;
+
     private DialogueEventManager _dialogueEventManager;
     
     void Start()
@@ -35,8 +38,10 @@ public class Bootstrap : MonoBehaviour
 
         _inventoryTracker.Initialize(_dialogueEventManager);
         _supportTracker.Initialize(_dialogueEventManager);
-        _characterTracker.Initialize(_dialogueEventManager);
+        _characterTracker.Initialize(_dialogueEventManager, _characterUI_Manager);
         _resourcesTracker.Initialize(_dialogueEventManager, _foodUI, _moneyUI, _sanitaryUI);
+
+        _characterUI_Manager.Initialize(_characterTracker, _supportTracker, _dialogueEventManager);
 
         _dialogueManager.Initialize(_dialogueEventManager);
         _gameLogic.Initialize(_dialogueEventManager);

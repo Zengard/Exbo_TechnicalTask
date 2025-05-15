@@ -6,8 +6,6 @@ using Articy.Articybrothel.GlobalVariables;
 
 public class MoneyUI : ResourceUI
 {
-    //private ResoursesTracker _resourcesTracker;
-
     public void Initialize(ResoursesTracker resourcesTracker)
     {
         _slider = GetComponent<Slider>();
@@ -17,8 +15,6 @@ public class MoneyUI : ResourceUI
         _globalvariableValue = ArticyGlobalVariables.Default.Resources.Money;
 
         _resourceName.text = _resourceData.DisplayName + ": " + _globalvariableValue;
-
-        //_resourcesTracker = resourcesTracker;
     }
 
     public void UpdateUIResources() // receive new data from ResourceTracker
