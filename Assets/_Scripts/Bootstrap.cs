@@ -15,7 +15,10 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private CharacterTracker _characterTracker;
 
     [Header("Resource settings")]
-    [SerializeField] private ResoursesTracker _resoursesTracker;
+    [SerializeField] private ResoursesTracker _resourcesTracker;
+
+    [Header("UI settings")]
+    [SerializeField] private FoodUI _foodUI;
 
     private DialogueEventManager _dialogueEventManager;
     
@@ -23,11 +26,15 @@ public class Bootstrap : MonoBehaviour
     {
         _dialogueEventManager = new DialogueEventManager();
 
-        _dialogueManager.Initialize(_dialogueEventManager);
-        _gameLogic.Initialize(_dialogueEventManager);
+        _foodUI.Initialize(_dialogueEventManager, _resourcesTracker);
+
+
         _inventoryTracker.Initialize(_dialogueEventManager);
         _supportTracker.Initialize(_dialogueEventManager);
         _characterTracker.Initialize(_dialogueEventManager);
-        _resoursesTracker.Initialize(_dialogueEventManager);
+        _resourcesTracker.Initialize(_dialogueEventManager, _foodUI);
+
+        _dialogueManager.Initialize(_dialogueEventManager);
+        _gameLogic.Initialize(_dialogueEventManager);
     } 
 }

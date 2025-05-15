@@ -7,14 +7,16 @@ using UnityEngine;
 
 public class ResoursesTracker : MonoBehaviour
 {
-    DialogueEventManager _dialogueEventManager;
-    string _resourceUpdateText;
+    private DialogueEventManager _dialogueEventManager;
+    private FoodUI _foodUI;
+
+    private string _resourceUpdateText;
 
     private int _food;
     private int _money;
     private int _sanitary;
   
-    public void Initialize(DialogueEventManager eventManager)
+    public void Initialize(DialogueEventManager eventManager, FoodUI foodUI)
     {
         _food = ArticyGlobalVariables.Default.Resources.Food;
         _money = ArticyGlobalVariables.Default.Resources.Money;
@@ -23,6 +25,8 @@ public class ResoursesTracker : MonoBehaviour
         _dialogueEventManager = eventManager;
         ArticyDatabase.DefaultGlobalVariables.Notifications.AddListener("Resources.*", OnFoodChanged);
         _dialogueEventManager.OnUpdateDialogueEntities.AddListener(SendToDialogue);
+
+        _foodUI = foodUI;
 
     }
 
@@ -39,7 +43,8 @@ public class ResoursesTracker : MonoBehaviour
                 {
                     _resourceUpdateText += "\n" + "-" + (_food - (int)aValue) + " ≈да";
                 }
-                _food = (int)aValue;
+                _food = (int)aValue;//отправить в фудё»
+                _foodUI.UpdateUIResources();
                 break;
 
             case "Resources.Money":
@@ -66,9 +71,12 @@ public class ResoursesTracker : MonoBehaviour
                 _sanitary = (int)aValue;
                 break;
         }
+       
+    }
 
-       
-       
+    public void UpdateFoodData(int newFoodData) 
+    {
+        _food = newFoodData;
     }
 
     private void SendToDialogue(TextMeshProUGUI dialogue) 

@@ -57,19 +57,19 @@ public class GameLogic : MonoBehaviour
 
         _dialogueEventManager = eventManager;
         _dialogueEventManager.OnDialogueEnded.AddListener(SetNextFlow);
-        //_dialogueEventManager.OnUpdateResources.AddListener(UpdateResources);
+        _dialogueEventManager.OnUpdateResources.AddListener(UpdateResources);
 
     }
-    void Update()
+    private void Update()
     {
         if (_dialogueManager.IsDialogueActive == true || _isGameOver == true) return;
 
         //_food -= Time.deltaTime;
-        if (_food <= 0) 
-        {
-            _gameOverScreen.SetActive(true);
-            _isGameOver = true;
-        }
+        //if (_food <= 0) 
+        //{
+        //    _gameOverScreen.SetActive(true);
+        //    _isGameOver = true;
+        //}
 
 
         _timer += Time.deltaTime;

@@ -51,6 +51,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
+        _dialogueEventManager.DialogueStarted();
 
         _dialgueText.text = string.Empty;
         _npcName.text = string.Empty;

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class DialogueEventManager
 {
     public UnityEvent OnDialogueEnded = new UnityEvent();
+    public UnityEvent OnDialogueStarted = new UnityEvent();
     public UnityEvent OnUpdateResources = new UnityEvent();
 
     public UnityEvent<TextMeshProUGUI> OnUpdateDialogueEntities = new UnityEvent<TextMeshProUGUI>();
@@ -12,6 +13,11 @@ public class DialogueEventManager
     public void DialogueEnded() 
     {
         OnDialogueEnded.Invoke();
+    }
+
+    public void DialogueStarted() 
+    {
+        OnDialogueStarted.Invoke();
     }
 
     public void UpdateResources() 
